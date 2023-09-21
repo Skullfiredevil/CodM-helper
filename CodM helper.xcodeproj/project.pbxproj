@@ -36,7 +36,7 @@
 /* Begin PBXFileReference section */
 		DE1708452ABC4EF8007C6D84 /* CodM helper.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "CodM helper.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		DE1708482ABC4EF8007C6D84 /* CodM_helperApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CodM_helperApp.swift; sourceTree = "<group>"; };
-		DE17084A2ABC4EF8007C6D84 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		DE17084A2ABC4EF8007C6D84 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; usesTabs = 0; };
 		DE17084C2ABC4EFA007C6D84 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		DE17084E2ABC4EFA007C6D84 /* CodM_helper.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = CodM_helper.entitlements; sourceTree = "<group>"; };
 		DE1708502ABC4EFA007C6D84 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };

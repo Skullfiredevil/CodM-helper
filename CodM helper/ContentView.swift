@@ -1,10 +1,3 @@
-//
-//  ContentView.swift
-//  CodM helper
-//
-//  Created by Tiago Pinto on 21/09/2023.
-//
-
 import SwiftUI
 
 struct GameMode: Codable, Identifiable {
@@ -33,55 +26,97 @@ struct ContentView: View {
     }
 
     var body: some View {
-        VStack {
-            Text("Kills Needed to Reach 1st Place")
-                .font(.title)
-                .padding()
+        HStack {
+            NavigationView {
+                VStack {
+                    Text("Game Mode Calculator")
+                        .font(.title)
+                        .fontWeight(.bold)
+                        .foregroundColor(.white)
 
-            Picker("Game Mode", selection: $selectedGameMode) {
-                ForEach(0..<gameModes.count, id: \.self) { index in
-                    Text(gameModes[index].name)
+                    GroupBox {
+                        Picker("", selection: $selectedGameMode) {
+                            ForEach(0..<gameModes.count, id: \.self) { index in
+                                Text(gameModes[index].name)
+                            }
+                        }
+                        .pickerStyle(PopUpButtonPickerStyle()) // Adjusted for macOS
+                        .labelsHidden()
+                    }
+
+                    GroupBox(label: Text("Player Stats")) {
+                        VStack(alignment: .leading) {
+                            Text("Current Points")
+                                .font(.caption)
+                                .foregroundColor(.gray)
+
+                            TextField("Enter Points", value: $currentPoints, formatter: NumberFormatter(), onCommit: {})
+                                .textFieldStyle(RoundedBorderTextFieldStyle())
+                        }
+                    }
+
+                    GroupBox(label: Text("Total Kills Needed")) {
+                        Text("\(killsNeeded)")
+                            .font(.title2)
+                            .bold()
+                            .foregroundColor(.blue)
+                    }
+
+                    List {
+                        ForEach(gameModes) { mode in
+                            HStack {
+                                Text(mode.name)
+                                    .font(.title3)
+                                    .fontWeight(.bold)
+
+                                Spacer()
+
+                                Text("\(mode.pointsNeeded) points, \(mode.pointsPerKill) per kill")
+                                    .foregroundColor(.gray)
+                            }
+                        }
+                        .onDelete(perform: deleteGameMode)
+                    }
+                    .listStyle(PlainListStyle())
+
+                    HStack {
+                        TextField("New Game Mode Name", text: $newGameModeName)
+                            .textFieldStyle(RoundedBorderTextFieldStyle())
+                            .padding()
+                        TextField("Points Needed", text: $newGameModePointsNeeded)
+                            .textFieldStyle(RoundedBorderTextFieldStyle())
+                            .padding()
+                        TextField("Points Per Kill", text: $newGameModePointsPerKill)
+                            .textFieldStyle(RoundedBorderTextFieldStyle())
+                            .padding()
+                        Button(action: {
+                            addGameMode()
+                        }) {
+                            Text("Add Game Mode")
+                        }
+                        .buttonStyle(DefaultButtonStyle())
+                        .padding()
+                    }
+                        
+                        Button(action: {
+                            calculateKillsNeeded()
+                        }) {
+                            Text("Calculate") // Add the "Calculate" button
+                                .padding()
+                                .foregroundColor(.white)
+                                .cornerRadius(10)
+                        }
+                        .buttonStyle(DefaultButtonStyle()) // Apply the DefaultButtonStyle
                 }
-            }
-            .pickerStyle(.menu)
-            .padding()
-
-            TextField("Current Points", value: $currentPoints, formatter: NumberFormatter())
                 .padding()
-
-            HStack {
-                Text("Total Kills Needed:")
-                Text("\(killsNeeded)")
-                    .font(.headline)
-            }
-            .padding()
-
-            List {
-                ForEach(gameModes) { mode in
-                    Text("\(mode.name): \(mode.pointsNeeded) points, \(mode.pointsPerKill) per kill")
-                }
-                .onDelete(perform: deleteGameMode)
-            }
-
-            HStack {
-                TextField("New Game Mode Name", text: $newGameModeName)
-                    .padding()
-                TextField("Points Needed", text: $newGameModePointsNeeded)
-                    .padding()
-                TextField("Points Per Kill", text: $newGameModePointsPerKill)
-                    .padding()
-                Button("Add Game Mode") {
-                    addGameMode()
-                }
+                .background(
+                    RoundedRectangle(cornerRadius: 20)
+                        .fill(Color(NSColor.windowBackgroundColor))
+                        .shadow(radius: 10)
+                )
                 .padding()
             }
-
-            Button("Calculate") {
-                calculateKillsNeeded()
-            }
-            .padding()
         }
-        .frame(width: 400, height: 600)
     }
 
     func calculateKillsNeeded() {
@@ -104,7 +139,8 @@ struct ContentView: View {
 
     func addGameMode() {
         if let pointsNeeded = Int(newGameModePointsNeeded),
-           let pointsPerKill = Int(newGameModePointsPerKill) {
+           let pointsPerKill = Int(newGameModePointsPerKill),
+           !newGameModeName.isEmpty {
             let newGameMode = GameMode(name: newGameModeName, pointsNeeded: pointsNeeded, pointsPerKill: pointsPerKill)
             gameModes.append(newGameMode)
             saveGameModes()
@@ -115,8 +151,5 @@ struct ContentView: View {
         }
     }
 }
-
-
-
 
 
